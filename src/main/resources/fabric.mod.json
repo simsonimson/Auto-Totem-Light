@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "autototemlight",
+	"version": "${version}",
+	"name": "AutoTotem Light",
+	"description": "A reactive assist system that alerts players when health is low and prepares for manual Totem swap with hotkey support.",
+	"authors": [
+		"SmartOffhand Team"
+	],
+	"contact": {
+		"homepage": "https://github.com/SmartOffhand/SmartOffhand",
+		"sources": "https://github.com/SmartOffhand/SmartOffhand"
+	},
+	"license": "MIT",
+	"icon": "assets/autototemlight/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"simson.smartoffhand.SmartOffhand"
+		],
+		"client": [
+			"simson.smartoffhand.SmartOffhandClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}

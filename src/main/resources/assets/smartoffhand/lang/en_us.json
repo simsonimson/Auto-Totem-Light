@@ -1,0 +1,21 @@
+{
+  "key.smartoffhand.totem_swap": "Totem Swap",
+  "category.smartoffhand.general": "SmartOffhand",
+  "smartoffhand.config.title": "SmartOffhand Configuration",
+  "smartoffhand.config.general": "General",
+  "smartoffhand.config.display": "Display",
+  "smartoffhand.config.enabled": "Enable SmartOffhand",
+  "smartoffhand.config.hp_threshold": "Health Threshold",
+  "smartoffhand.config.priority": "Totem Search Priority",
+  "smartoffhand.config.fight_only": "Fight Only Mode",
+  "smartoffhand.config.warning_text": "Show Warning Text",
+  "smartoffhand.config.hud_position": "HUD Position",
+  "smartoffhand.config.low_health_sound": "Low Health Sound",
+  "smartoffhand.config.missing_totem_behavior": "Missing Totem Behavior",
+  "smartoffhand.config.reset_defaults": "Reset to Defaults",
+  "smartoffhand.totem_equipped": "Totem equipped!",
+  "smartoffhand.totem_already_equipped": "Totem already equipped!",
+  "smartoffhand.no_totem_found": "No Totem found!",
+  "smartoffhand.warning_text": "Totem Available – Press %s"
+}
+

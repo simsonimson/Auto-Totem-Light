@@ -1,0 +1,20 @@
+{
+  "key.autototemlight.totem_swap": "Totem Swap",
+  "category.autototemlight.general": "AutoTotem Light",
+  "autototemlight.config.title": "AutoTotem Light Configuration",
+  "autototemlight.config.general": "General",
+  "autototemlight.config.display": "Display",
+  "autototemlight.config.enabled": "Enable AutoTotem Light",
+  "autototemlight.config.hp_threshold": "Health Threshold",
+  "autototemlight.config.priority": "Totem Search Priority",
+  "autototemlight.config.fight_only": "Fight Only Mode",
+  "autototemlight.config.warning_text": "Show Warning Text",
+  "autototemlight.config.hud_position": "HUD Position",
+  "autototemlight.config.low_health_sound": "Low Health Sound",
+  "autototemlight.config.missing_totem_behavior": "Missing Totem Behavior",
+  "autototemlight.config.reset_defaults": "Reset to Defaults",
+  "autototemlight.totem_equipped": "Totem equipped!",
+  "autototemlight.totem_already_equipped": "Totem already equipped!",
+  "autototemlight.no_totem_found": "No Totem Available!",
+  "autototemlight.warning_text": "Totem Available – Press %s"
+}
