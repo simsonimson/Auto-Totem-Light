@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.option.KeyBinding.Category;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -46,7 +45,7 @@ public class SmartOffhandClient implements ClientModInitializer {
             "key.autototemlight.totem_swap",
             InputUtil.Type.KEYSYM,
             GLFW.GLFW_KEY_G,
-            Category.MISC
+            "key.categories.misc"
         ));
         
             // Register HUD renderer
