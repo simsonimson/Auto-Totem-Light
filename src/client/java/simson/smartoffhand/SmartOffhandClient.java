@@ -131,7 +131,7 @@ public class SmartOffhandClient implements ClientModInitializer {
             // Store the current offhand item
             ItemStack currentOffhand = player.getOffHandStack().copy();
             
-            // Find the original slot first (before modifying anything)
+            // Find the original slot first
             int totemSlot = -1;
             for (int i = 0; i < player.getInventory().size(); i++) {
                 if (ItemStack.areEqual(player.getInventory().getStack(i), foundTotem)) {
@@ -140,12 +140,19 @@ public class SmartOffhandClient implements ClientModInitializer {
                 }
             }
             
-            // Move totem to offhand
-            player.setStackInHand(Hand.OFF_HAND, foundTotem.copy());
-            
-            // Replace the original slot with the previous offhand item
             if (totemSlot != -1) {
+                // Perform the swap using direct inventory manipulation
+                // This approach is more reliable for client-side mods
+                ItemStack totemStack = player.getInventory().getStack(totemSlot).copy();
+                
+                // Set the totem in offhand
+                player.setStackInHand(Hand.OFF_HAND, totemStack);
+                
+                // Set the previous offhand item in the totem's slot
                 player.getInventory().setStack(totemSlot, currentOffhand);
+                
+                // Force inventory sync to prevent desync issues
+                player.getInventory().markDirty();
             }
             
             // Play success sound and show message
