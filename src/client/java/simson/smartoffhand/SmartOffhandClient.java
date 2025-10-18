@@ -128,9 +128,6 @@ public class SmartOffhandClient implements ClientModInitializer {
         ItemStack foundTotem = findTotem(player, config.priority);
         
         if (foundTotem != null && !foundTotem.isEmpty()) {
-            // Store the current offhand item
-            ItemStack currentOffhand = player.getOffHandStack().copy();
-            
             // Find the original slot first
             int totemSlot = -1;
             for (int i = 0; i < player.getInventory().size(); i++) {
@@ -141,18 +138,33 @@ public class SmartOffhandClient implements ClientModInitializer {
             }
             
             if (totemSlot != -1) {
-                // Perform the swap using direct inventory manipulation
-                // This approach is more reliable for client-side mods
+                // Store the current offhand item BEFORE making any changes
+                ItemStack previousOffhand = player.getOffHandStack().copy();
                 ItemStack totemStack = player.getInventory().getStack(totemSlot).copy();
                 
-                // Set the totem in offhand
+                // Move totem to offhand
                 player.setStackInHand(Hand.OFF_HAND, totemStack);
                 
-                // Set the previous offhand item in the totem's slot
-                player.getInventory().setStack(totemSlot, currentOffhand);
+                // Remove totem from original slot
+                player.getInventory().setStack(totemSlot, ItemStack.EMPTY);
                 
-                // Force inventory sync to prevent desync issues
-                player.getInventory().markDirty();
+                // Handle the previous offhand item
+                if (!previousOffhand.isEmpty()) {
+                    // Try to find an empty slot for the previous offhand item
+                    boolean foundEmptySlot = false;
+                    for (int i = 0; i < player.getInventory().size(); i++) {
+                        if (player.getInventory().getStack(i).isEmpty()) {
+                            player.getInventory().setStack(i, previousOffhand);
+                            foundEmptySlot = true;
+                            break;
+                        }
+                    }
+                    
+                    // If no empty slot found, drop the item
+                    if (!foundEmptySlot) {
+                        player.dropItem(previousOffhand, false);
+                    }
+                }
             }
             
             // Play success sound and show message
