@@ -39,15 +39,16 @@ public class SmartOffhandClient implements ClientModInitializer {
         try {
             // Initialize HUD
             hud = new SmartOffhandHud();
-        
-        // Register keybinding
-        totemSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key.autototemlight.totem_swap",
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_G,
-            "key.categories.misc"
-        ));
-        
+            
+            // Register keybinding
+            totemSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.autototemlight.totem_swap",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_G,
+                "key.categories.gameplay"
+            ));
+            LOGGER.info("Keybinding registered: {}", totemSwapKey.getTranslationKey());
+            
             // Register HUD renderer
             HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
                 new SmartOffhandHudRenderer(hud).render(drawContext, tickDelta);
