@@ -40,19 +40,17 @@ public class SmartOffhandClient implements ClientModInitializer {
             // Initialize HUD
             hud = new SmartOffhandHud();
             
-            // Register keybinding immediately
+            // Register keybinding immediately - using misc category for better Lunar Client compatibility
             totemSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.autototemlight.totem_swap",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_G,
-                "key.categories.gameplay"
+                "key.categories.misc"
             ));
             LOGGER.info("Keybinding registered: {} with category: {}", totemSwapKey.getTranslationKey(), totemSwapKey.getCategory());
             
-            // Register HUD renderer
-            HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
-                new SmartOffhandHudRenderer(hud).render(drawContext, tickDelta);
-            });
+            // Register HUD renderer - using safer approach for Lunar Client
+            HudRenderCallback.EVENT.register(new SmartOffhandHudRenderer(hud)::render);
             
             // Register client tick event
             ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
@@ -110,8 +108,8 @@ public class SmartOffhandClient implements ClientModInitializer {
         
         wasLowHealth = isLowHealth;
         
-        // Handle keybinding
-        if (totemSwapKey.wasPressed()) {
+        // Handle keybinding with proper while loop for Lunar Client compatibility
+        while (totemSwapKey.wasPressed()) {
             handleTotemSwap(client, player, config);
         }
     }
