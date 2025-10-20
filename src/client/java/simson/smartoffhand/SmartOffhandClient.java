@@ -31,7 +31,6 @@ public class SmartOffhandClient implements ClientModInitializer {
     private SmartOffhandHud hud;
     private long lastDamageTime = 0;
     private boolean wasLowHealth = false;
-    private boolean keybindingRegistered = false;
     
     @Override
     public void onInitializeClient() {
@@ -41,7 +40,14 @@ public class SmartOffhandClient implements ClientModInitializer {
             // Initialize HUD
             hud = new SmartOffhandHud();
             
-            // Keybinding will be registered in client tick when client is ready
+            // Register keybinding immediately
+            totemSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.autototemlight.totem_swap",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_G,
+                "key.categories.gameplay"
+            ));
+            LOGGER.info("Keybinding registered: {} with category: {}", totemSwapKey.getTranslationKey(), totemSwapKey.getCategory());
             
             // Register HUD renderer
             HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
@@ -65,17 +71,7 @@ public class SmartOffhandClient implements ClientModInitializer {
             return;
         }
         
-        // Register keybinding when client is ready (only once)
-        if (!keybindingRegistered) {
-            totemSwapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.autototemlight.totem_swap",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_G,
-                "key.categories.misc"
-            ));
-            keybindingRegistered = true;
-            LOGGER.info("Keybinding registered: {} with category: {}", totemSwapKey.getTranslationKey(), totemSwapKey.getCategory());
-        }
+        // Keybinding is already registered during mod initialization
         
         SmartOffhandConfig config = SmartOffhandConfig.getInstance();
         if (!config.isEnabled()) {
