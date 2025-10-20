@@ -24,3 +24,5 @@ public class SmartOffhand implements ModInitializer {
     }
 }
 
+
+

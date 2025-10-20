@@ -141,12 +141,18 @@ public class SmartOffhandClient implements ClientModInitializer {
                 ItemStack previousOffhand = player.getOffHandStack().copy();
                 ItemStack totemStack = player.getInventory().getStack(totemSlot).copy();
                 
-                // SWAP: Put totem in offhand and put previous offhand item where totem was
+                // Use a more direct approach that the server will recognize
+                // First, move the totem to the offhand
                 player.setStackInHand(Hand.OFF_HAND, totemStack);
+                
+                // Then move the previous offhand item to the totem's slot
                 player.getInventory().setStack(totemSlot, previousOffhand);
                 
                 // Force inventory sync
                 player.getInventory().markDirty();
+                
+                // Force the player to update their equipment
+                player.updateTrackedPosition(player.getX(), player.getY(), player.getZ());
             }
             
             // Play success sound and show message
