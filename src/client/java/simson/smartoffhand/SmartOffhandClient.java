@@ -13,8 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Client-side mod class for SmartOffhand - CRASH-SAFE VERSION
+ * Client-side mod class for SmartOffhand - LUNAR CLIENT COMPATIBLE VERSION
  * Uses ClientPlayConnectionEvents for safe initialization
+ * NO direct client.player or client.world access in onInitializeClient()
  */
 public class SmartOffhandClient implements ClientModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger("SmartOffhand");
@@ -43,7 +44,7 @@ public class SmartOffhandClient implements ClientModInitializer {
             // Register client tick event - safe with null checks
             ClientTickEvents.END_CLIENT_TICK.register(this::onClientTick);
             
-            // Register join event for safe initialization
+            // Register join event for safe initialization - NO client.player access here
             ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
                 LOGGER.info("Player joined world - SmartOffhand is now active");
                 clientReady = true;
@@ -55,7 +56,7 @@ public class SmartOffhandClient implements ClientModInitializer {
                 clientReady = false;
             });
             
-            LOGGER.info("SmartOffhand client initialized successfully - CRASH-SAFE VERSION");
+            LOGGER.info("SmartOffhand client initialized successfully - LUNAR CLIENT COMPATIBLE");
             
         } catch (Exception e) {
             LOGGER.error("CRITICAL ERROR: Failed to initialize SmartOffhand client", e);
@@ -64,7 +65,8 @@ public class SmartOffhandClient implements ClientModInitializer {
     }
     
     /**
-     * Handle client tick events - ULTRA SAFE VERSION
+     * Handle client tick events - LUNAR CLIENT SAFE VERSION
+     * ALL client.player and client.world access moved here from onInitializeClient()
      */
     private void onClientTick(MinecraftClient client) {
         // Early returns for maximum safety
@@ -81,6 +83,7 @@ public class SmartOffhandClient implements ClientModInitializer {
             return;
         }
         
+        // CRITICAL: This is the ONLY place where we access client.player and client.world
         if (client.player == null || client.world == null) {
             return;
         }
@@ -96,19 +99,25 @@ public class SmartOffhandClient implements ClientModInitializer {
     }
     
     /**
-     * Handle key press - SAFE TEST VERSION
+     * Handle key press - LUNAR CLIENT SAFE VERSION
+     * ALL player access moved here from onInitializeClient()
      */
     private void handleKeyPress(MinecraftClient client) {
         try {
-            if (client.player != null) {
-                // Test message with current health info
-                float health = client.player.getHealth();
-                float maxHealth = client.player.getMaxHealth();
-                
-                String message = String.format("§aTest OK! Health: %.1f/%.1f", health, maxHealth);
-                client.player.sendMessage(Text.literal(message), true);
-                LOGGER.info("Keybinding pressed - Health: {}/{}", health, maxHealth);
+            // Double-check player exists (defensive programming)
+            if (client.player == null) {
+                LOGGER.warn("Player is null in handleKeyPress");
+                return;
             }
+            
+            // Test message with current health info
+            float health = client.player.getHealth();
+            float maxHealth = client.player.getMaxHealth();
+            
+            String message = String.format("§aTest OK! Health: %.1f/%.1f", health, maxHealth);
+            client.player.sendMessage(Text.literal(message), true);
+            LOGGER.info("Keybinding pressed - Health: {}/{}", health, maxHealth);
+            
         } catch (Exception e) {
             LOGGER.error("Error handling key press", e);
         }

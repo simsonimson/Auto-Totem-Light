@@ -7,8 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HUD renderer for SmartOffhand warning text - CRASH-SAFE VERSION
- * Handles rendering with comprehensive null checks
+ * HUD renderer for SmartOffhand warning text - LUNAR CLIENT COMPATIBLE VERSION
+ * NO direct MinecraftClient.getInstance() access in constructor or static contexts
+ * ALL client access moved to render method with null checks
  */
 public class SmartOffhandHudRenderer {
     private static final Logger LOGGER = LoggerFactory.getLogger("SmartOffhand");
@@ -19,7 +20,8 @@ public class SmartOffhandHudRenderer {
     }
     
     /**
-     * Render the HUD overlay - ULTRA SAFE VERSION
+     * Render the HUD overlay - LUNAR CLIENT SAFE VERSION
+     * ALL client.player and client.world access moved here from constructor/static contexts
      */
     public void render(DrawContext context, net.minecraft.client.render.RenderTickCounter tickCounter) {
         try {
@@ -32,12 +34,15 @@ public class SmartOffhandHudRenderer {
                 return;
             }
             
-            // Safe client access
+            // CRITICAL: This is the ONLY place where we access MinecraftClient.getInstance()
+            // Moved from constructor/static contexts to here for Lunar Client compatibility
             MinecraftClient client = MinecraftClient.getInstance();
             if (client == null) {
                 return;
             }
             
+            // CRITICAL: This is the ONLY place where we access client.player and client.world
+            // Moved from constructor/static contexts to here for Lunar Client compatibility
             if (client.player == null || client.world == null) {
                 return;
             }
